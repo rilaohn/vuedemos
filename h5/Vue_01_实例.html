@@ -1,0 +1,31 @@
+<!--
+    Create by JetBrains IDEA
+    User: Etertops
+    Date: 2017/11/6
+    Time: 16:00
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,user-scalable=0">
+	<title>Vue 实例</title>
+	<script src="../js/vue.js"/>
+</head>
+<body onload="init()">
+
+</body>
+<script>
+	function init() {
+		var data = {a: 1};
+		var NV = new Vue({
+			el: "#t01",
+			data: data
+		});
+		if (vm.a === data.a)
+			alert("vm.a === data.a 的结果是：true");
+		else
+			alert("vm.a === data.a 的结果是：false");
+	}
+</script>
+</html>

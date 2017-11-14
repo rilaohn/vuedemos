@@ -1,0 +1,148 @@
+<!--
+    Create by JetBrains IDEA
+    User: Etertops
+    Date: 2017/11/14
+    Time: 17:05
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,user-scalable=0">
+	<title>Vue - >Class 与 Style 绑定</title>
+	<script src="../js/vue.js"></script>
+	<style>
+		.active{
+			border-bottom: 5px solid green;
+		}
+		.static{
+			font-size: 20px;
+		}
+		.textDanger{
+			color: red;
+		}
+	</style>
+</head>
+<body>
+<div id="style001">
+	<div style="margin-bottom: 10px">
+		<label :class="{ active: isActive }">数据数据</label>
+	</div>
+	<button @click="toggleActive">toggle isActive</button>
+</div>
+<div id="style002">
+	<div style="margin-bottom: 10px"><label class="static" :class="{ active: isActive, 'textDanger': hasError }">数据数据</label></div>
+	<button @click="toggleActive">toggle isActive</button>
+	<button @click="toggleError">toggle hasError</button>
+</div>
+
+<div id="style003">
+	<div style="margin-bottom: 10px"><label class="static" :class="classObject">数据数据</label></div>
+	<button @click="toggleActive">toggle isActive</button>
+	<button @click="toggleError">toggle hasError</button>
+</div>
+
+<div id="style004">
+	<div style="margin-bottom: 10px"><label :class="[activeClass, errorClass]">数据数据1</label></div>
+	<div style="margin-bottom: 10px"><label :class="[isActive ? activeClass : '', errorClass]">数据数据2</label></div>
+	<div style="margin-bottom: 10px"><label :class="[{active: isActive}, errorClass]">数据数据3</label></div>
+	<button @click="toggleActive">toggle isActive</button>
+</div>
+<my-component id="style005" class="active textDanger"></my-component>
+<div id="style006" :style="{ color: activeColor, fontSize: fontSize + 'px' }">数据数据</div>
+<div id="style007" :style="styleObject">数据数据22</div>
+</body>
+<script>
+	// 对象语法   https://cn.vuejs.org/v2/guide/class-and-style.html#对象语法
+	new Vue({
+		el: "#style001",
+		data: {
+			isActive: null
+		},
+		methods: {
+			toggleActive: function () {
+				this.isActive = this.isActive ? null : "y";
+			}
+		}
+	});
+
+	new Vue({
+		el:"#style002",
+		data:{
+			isActive: false,
+			hasError: false
+		},
+		methods: {
+			toggleActive: function () {
+				this.isActive = this.isActive ? false : true;
+			},
+			toggleError: function () {
+				this.hasError = this.hasError ? false : true;
+			}
+		}
+	});
+
+	new Vue({
+		el:"#style003",
+		data:{
+			classObject: {
+				active: false,
+				textDanger: false
+			}
+		},
+		methods: {
+			toggleActive: function () {
+				this.classObject.active = this.classObject.active ? false : true;
+			},
+			toggleError: function () {
+				this.classObject.textDanger = this.classObject.textDanger ? false : true;
+			}
+		}
+	});
+
+	// 数组语法   https://cn.vuejs.org/v2/guide/class-and-style.html#数组语法
+	new Vue({
+		el: "#style004",
+		data:{
+			activeClass: 'active',
+			errorClass: 'textDanger',
+			isActive: true
+		},
+		methods: {
+			toggleActive: function () {
+				this.isActive = this.isActive ? false : true;
+			},
+		}
+	});
+
+	// 用在组件上   https://cn.vuejs.org/v2/guide/class-and-style.html#用在组件上
+	Vue.component('my-component', {
+		template: '<p class="foo bar"><span>Hi this is my component text!</span></p>'
+	});
+	new Vue({
+		el: "#style005"
+	});
+
+	// 绑定内联样式   https://cn.vuejs.org/v2/guide/class-and-style.html#绑定内联样式
+	// 对象语法     https://cn.vuejs.org/v2/guide/class-and-style.html#对象语法-1
+	new Vue({
+		el: "#style006",
+		data:{
+			activeColor: 'red',
+			fontSize: 30
+		}
+	});
+	new Vue({
+		el: "#style00",
+		data:{
+			styleObject: {
+				color: 'red',
+				fontSize: '13px'
+			}
+		}
+	});
+
+	//数组语法    https://cn.vuejs.org/v2/guide/class-and-style.html#数组语法-1
+	//多重值   https://cn.vuejs.org/v2/guide/class-and-style.html#多重值
+</script>
+</html>

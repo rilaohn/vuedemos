@@ -1,0 +1,153 @@
+<!--
+    Create by JetBrains IDEA
+    User: Etertops
+    Date: 2017/11/14
+    Time: 14:46
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,user-scalable=0">
+	<title>Vue 计算属性和观察者</title>
+	<script src="../js/vue.js"></script>
+	<!-- 因为 AJAX 库和通用工具的生态已经相当丰富，Vue 核心代码没有重复 -->
+	<!-- 提供这些功能以保持精简。这也可以让你自由选择自己更熟悉的工具。 -->
+	<script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>
+</head>
+<body>
+<div id="computed001">
+	<input v-model="message">
+	<p>Original message: "{{ message }}"</p>
+	<p>Computed reversed message: "{{ reversedMessage }}"</p>
+	<p>method reversed message: "{{ reversedMessage() }}"</p>
+	<p>now time: "{{ now }}"</p>
+	<p>after one second new Date: "{{ nowtime() }}"</p>
+	<p>after one second from Date: "{{ nowtime2() }}"</p>
+</div>
+
+<div id="computed002">
+	<div>full name = {{ fullName }}, first name = {{firstName}}, last name = {{lastName}}</div>
+	<div>
+		<input v-model="tempName" @input="handleChange">
+	</div>
+	<button @click="handleChange">确定</button>
+</div>
+
+<div id="watch-example">
+	<p>
+		Ask a yes/no question:
+		<input v-model="question">
+	</p>
+	<p>{{ answer }}</p>
+	<img v-if="imagepath" :src="imagepath">
+</div>
+</body>
+<script>
+	// 基础例子   https://cn.vuejs.org/v2/guide/computed.html#基础例子
+	new Vue({
+		el: '#computed001',
+		data: {
+			message: 'Hello world!'
+		},
+		methods: {
+			reversedMessage: function () {
+				return this.message.split('').reverse().join('')
+			},
+			nowtime: function () {
+				return Date.now();
+			},
+			nowtime2: function () {
+				return this.now;
+			}
+		},
+		computed: {
+			// 计算属性的 getter
+			reversedMessage: function () {
+				// `this` 指向 vm 实例
+				return this.message.split('').reverse().join('')
+			},
+			now: function () {
+				return Date.now()
+			}
+		}
+	});
+
+	// 计算属性的-setter     https://cn.vuejs.org/v2/guide/computed.html#计算属性的-setter
+	var vm = new Vue({
+		el:"#computed002",
+		data: {
+			firstName: 'Foo',
+			lastName: 'Bar',
+			tempName: ""
+		},
+		computed: {
+			fullName: {
+				get: function () {
+					return this.firstName + ' ' + this.lastName
+				},
+				set: function (newValue) {
+					var names = newValue.split(' ');
+					this.firstName = names[0];
+					if (names.length > 1)
+						this.lastName = names[names.length - 1];
+					else
+						this.lastName = '';
+				}
+			}
+		},
+		methods:{
+			handleChange: function () {
+				this.fullName = this.tempName;
+			}
+		}
+	});
+
+
+	// 侦听器   https://cn.vuejs.org/v2/guide/computed.html#侦听器
+	var watchExampleVM = new Vue({
+		el: '#watch-example',
+		data: {
+			question: '',
+			answer: 'I cannot give you an answer until you ask a question!',
+			imagepath: ""
+		},
+		watch: {
+			// 如果 `question` 发生改变，这个函数就会运行
+			question: function (newQuestion) {
+				this.answer = 'Waiting for you to stop typing...'
+				this.getAnswer()
+			}
+		},
+		methods: {
+			// `_.debounce` 是一个通过 Lodash 限制操作频率的函数。
+			// 在这个例子中，我们希望限制访问 yesno.wtf/api 的频率
+			// AJAX 请求直到用户输入完毕才会发出。想要了解更多关于
+			// `_.debounce` 函数 (及其近亲 `_.throttle`) 的知识，
+			// 请参考：https://lodash.com/docs#debounce
+			getAnswer: _.debounce(
+				function () {
+					if (this.question.indexOf('?') === -1) {
+						this.answer = 'Questions usually contain a question mark. ;-)';
+						return
+					}
+					this.answer = 'Thinking...';
+					var vm = this;
+					axios.get('https://yesno.wtf/api')
+						.then(function (response) {
+							vm.answer = _.capitalize(response.data.answer);
+							vm.imagepath = _.capitalize(response.data.image);
+						})
+						.catch(function (error) {
+							vm.answer = 'Error! Could not reach the API. ' + error
+							vm.imagepath = "";
+						})
+				},
+				// 这是我们为判定用户停止输入等待的毫秒数
+				500
+			)
+		}
+	});
+</script>
+</html>

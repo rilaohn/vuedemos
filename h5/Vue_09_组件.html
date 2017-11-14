@@ -1,0 +1,162 @@
+<!--
+    Create by JetBrains IDEA
+    User: Etertops
+    Date: 2017/11/6
+    Time: 16:18
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,user-scalable=0">
+	<title>Vue 组件</title>
+	<script src="../js/vue.js"></script>
+</head>
+<body>
+<div id="ex01">
+	<my-component></my-component>
+</div>
+<div id="ex02">
+	<my-component2></my-component2>
+</div>
+<table id="ex03">
+	<tr is="my-row"></tr>
+</table>
+
+<div id="example-2">
+	<simple-counter></simple-counter>
+	<simple-counter></simple-counter>
+	<simple-counter></simple-counter>
+</div>
+<div id="example-3">
+	<simple-counter2></simple-counter2>
+	<simple-counter2></simple-counter2>
+	<simple-counter2></simple-counter2>
+</div>
+<div id="ex04">
+	<child message="hello!"></child>
+</div>
+
+<div id="ex05">
+	<c22 pdata="123"></c22>
+</div>
+<div id="ex06">
+	<child2 my-message="hello!"></child2>
+</div>
+
+<div id="ex07">
+	<input v-model="parentMsg">
+	<br>
+	<child2 v-bind:my-message="parentMsg"></child2>
+</div>
+</body>
+<script>
+	new Vue({
+		created: function () {
+			console.log('created')
+		},
+		mounted: function () {
+			console.log('mounted')
+		},
+		updated: function () {
+			console.log("updated")
+		},
+		destroyed: function () {
+			console.log("destroyed")
+		}
+	});
+	// 全局注册   https://cn.vuejs.org/v2/guide/components.html#全局注册
+	Vue.component('my-component', {
+		template: '<div>A custom component!</div>'
+	});
+	new Vue({
+		el: '#ex01'
+	});
+
+	// 局部注册    https://cn.vuejs.org/v2/guide/components.html#局部注册
+	new Vue({
+		el: '#ex02',
+		components: {
+			'my-component2': {
+				template: '<div>A custom component 2!</div>'
+			}
+		}
+	});
+
+	// DOM-模板解析注意事项    https://cn.vuejs.org/v2/guide/components.html#DOM-模板解析注意事项
+	// FIXME 没有测试项目 <script type="text/x-template"> JavaScript 内联模板字符串 .vue 组件
+	Vue.component("my-row", {
+		template: "<span style='color: brown'>test text</span>"
+	});
+	new Vue({
+		el: "#ex03"
+	})
+
+	// data-必须是函数    https://cn.vuejs.org/v2/guide/components.html#data-必须是函数
+	var data = { counter: 0 }
+	Vue.component('simple-counter', {
+		template: '<button v-on:click="counter += 1">{{ counter }}</button>',
+		// 技术上 data 的确是一个函数了，因此 Vue 不会警告，
+		// 但是我们却给每个组件实例返回了同一个对象的引用
+		data: function () {
+			return data
+		}
+	});
+	new Vue({
+		el: '#example-2'
+	});
+	Vue.component('simple-counter2', {
+		template: '<button v-on:click="counter += 1">{{ counter }}</button>',
+		// 技术上 data 的确是一个函数了，因此 Vue 不会警告，
+		// 但是我们却给每个组件实例返回了同一个对象的引用
+		data: function () {
+			return { counter: 0 };
+		}
+	});
+	new Vue({
+		el: '#example-3'
+	});
+
+	//使用-Prop-传递数据 https://cn.vuejs.org/v2/guide/components.html#使用-Prop-传递数据
+	Vue.component('child', {
+		// 声明 props
+		props: ['message'],
+		// 就像 data 一样，prop 也可以在模板中使用
+		// 同样也可以在 vm 实例中通过 this.message 来使用
+		template: '<span>{{ message }}</span>'
+	});
+	new Vue({
+		el: "#ex04"
+	});
+
+	Vue.component('p11', {
+		template: "<div></div>"
+	});
+	Vue.component("c22", {
+		props: ["pdata"],
+		template: "<div>{{pdata}}</div>"
+	});
+
+	new Vue({
+		el: "#ex05"
+	});
+	//camelCase-vs-kebab-case https://cn.vuejs.org/v2/guide/components.html#camelCase-vs-kebab-case
+	Vue.component('child2', {
+		// 在 JavaScript 中使用 camelCase
+		props: ['myMessage'],
+		template: '<span>{{ myMessage }}</span>'
+	});
+	new Vue({
+		el: "#ex06"
+	});
+
+	// 动态-Prop https://cn.vuejs.org/v2/guide/components.html#动态-Prop
+	var parentMsg;
+	new Vue({
+		el: "#ex07",
+		data: {
+			parentMsg: '输入内容测试'
+		}
+	});
+</script>
+</html>

@@ -1,0 +1,116 @@
+<!--
+    Create by JetBrains IDEA
+    User: Etertops
+    Date: 2017/11/14
+    Time: 11:32
+-->
+<!DOCTYPE html>
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,user-scalable=0">
+	<title>Vue 语法</title>
+	<script src="../js/vue.js"></script>
+</head>
+<body>
+<span id="syntax001">Message: {{ msg[0] }}</span>
+<div id="syntax002" v-html="rawHtml"></div>
+<div id="syntax003">普通插入语文本插入对比：{{contrast}}</div>
+<div id="syntax004" v-html="rawHtml">普通插入语文本插入对比2：</div>
+<div class="temp_class001" :id="dynamicId">this div's id :{{dynamicId}}</div>
+<div class="temp_class002" :id="'list-' + id">5 + 6 = {{ 5 +6 }}, ok = {{ok ? "YES" : "NO"}}, {{message}}.reverse = {{ message.split('').reverse().join('') }}</div>
+<div id="syntax007">a = {{var a =1}} {{if(ok) return message}},</div>
+<div id="syntax0071">{{if(ok) return message}},</div>
+<div id="syntax008">current time is : {{(new Date).getTime()}}, 1- 10000 random number is : {{parseInt(Math.random() * 10000)}}</div>
+<div id="syntax009" v-if="show">是否显示这一行: {{show}}</div>
+<div id="syntax010" @click="aclick">点击事件绑定缩写</div>
+</body>
+<script>
+	// 文本    https://cn.vuejs.org/v2/guide/syntax.html#文本
+	new Vue({
+		el: "#syntax001",
+		data: {
+			msg: ["hello", "world", "!"]
+		}
+	});
+
+	// 原始 HTML   https://cn.vuejs.org/v2/guide/syntax.html#原始-HTML
+	new Vue({
+		el: "#syntax002",
+		data: {
+			rawHtml: "<div><label style='color: rebeccapurple'>hello</label> world!</div>"
+		}
+	});
+
+	// 文本 与 原始HTML 插入对比
+	new Vue({
+		el: "#syntax003",
+		data: {
+			contrast: "<div><label style='color: rebeccapurple'>hello</label> world!</div>"
+		}
+	});
+
+	new Vue({
+		el: "#syntax004",
+		data: {
+			rawHtml: "<div><label style='color: rebeccapurple'>hello</label> world!</div>"
+		}
+	});
+
+	// 特性 https://cn.vuejs.org/v2/guide/syntax.html#特性
+	new Vue({
+		el: '.temp_class001',
+		data:{
+			dynamicId: "id000"
+		}
+	});
+
+	// 使用-JavaScript-表达式  https://cn.vuejs.org/v2/guide/syntax.html#使用-JavaScript-表达式
+	new Vue({
+		el: ".temp_class002",
+		data: {
+			id: "test_id",
+			ok: "y",
+			message: 'hello'
+		}
+	});
+	new Vue({
+		el: "#syntax007",
+		data:{
+			ok: "y",
+			message: 'hello'
+		}
+	});
+	new Vue({
+		el: "#syntax0071",
+		data:{
+			ok: "y",
+			message: 'hello'
+		}
+	});
+	new Vue({
+		el: "#syntax008",
+	});
+
+	// 指令   https://cn.vuejs.org/v2/guide/syntax.html#指令
+	new Vue({
+		el: "#syntax009",
+		data: {
+			show: "yes"
+		}
+	});
+
+	// 修饰符  https://cn.vuejs.org/v2/guide/syntax.html#修饰符
+
+
+	// 缩写    https://cn.vuejs.org/v2/guide/syntax.html#缩写
+	new Vue({
+		el: "#syntax010",
+		methods:{
+			aclick: function () {
+				alert(111);
+			}
+		}
+	});
+</script>
+</html>
