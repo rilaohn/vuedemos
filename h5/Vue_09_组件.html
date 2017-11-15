@@ -65,7 +65,9 @@
 			console.log("destroyed")
 		}
 	});
-	// 全局注册   https://cn.vuejs.org/v2/guide/components.html#全局注册
+	/**
+	 * 全局注册   https://cn.vuejs.org/v2/guide/components.html#全局注册
+	 */
 	Vue.component('my-component', {
 		template: '<div>A custom component!</div>'
 	});
@@ -73,7 +75,9 @@
 		el: '#ex01'
 	});
 
-	// 局部注册    https://cn.vuejs.org/v2/guide/components.html#局部注册
+	/**
+	 * 局部注册    https://cn.vuejs.org/v2/guide/components.html#局部注册
+	 */
 	new Vue({
 		el: '#ex02',
 		components: {
@@ -83,16 +87,21 @@
 		}
 	});
 
-	// DOM-模板解析注意事项    https://cn.vuejs.org/v2/guide/components.html#DOM-模板解析注意事项
+	/**
+	 * DOM-模板解析注意事项    https://cn.vuejs.org/v2/guide/components.html#DOM-模板解析注意事项
+	 */
 	// FIXME 没有测试项目 <script type="text/x-template"> JavaScript 内联模板字符串 .vue 组件
 	Vue.component("my-row", {
 		template: "<span style='color: brown'>test text</span>"
 	});
 	new Vue({
 		el: "#ex03"
-	})
+	});
 
-	// data-必须是函数    https://cn.vuejs.org/v2/guide/components.html#data-必须是函数
+	/**
+	 * data-必须是函数    https://cn.vuejs.org/v2/guide/components.html#data-必须是函数
+	 * @type {{counter: number}}
+	 */
 	var data = { counter: 0 }
 	Vue.component('simple-counter', {
 		template: '<button v-on:click="counter += 1">{{ counter }}</button>',
@@ -117,7 +126,9 @@
 		el: '#example-3'
 	});
 
-	//使用-Prop-传递数据 https://cn.vuejs.org/v2/guide/components.html#使用-Prop-传递数据
+	/**
+	 * 使用-Prop-传递数据 https://cn.vuejs.org/v2/guide/components.html#使用-Prop-传递数据
+	 */
 	Vue.component('child', {
 		// 声明 props
 		props: ['message'],
@@ -140,7 +151,11 @@
 	new Vue({
 		el: "#ex05"
 	});
-	//camelCase-vs-kebab-case https://cn.vuejs.org/v2/guide/components.html#camelCase-vs-kebab-case
+
+
+	/**
+	 * camelCase-vs-kebab-case       https://cn.vuejs.org/v2/guide/components.html#camelCase-vs-kebab-case
+	 */
 	Vue.component('child2', {
 		// 在 JavaScript 中使用 camelCase
 		props: ['myMessage'],
@@ -150,7 +165,9 @@
 		el: "#ex06"
 	});
 
-	// 动态-Prop https://cn.vuejs.org/v2/guide/components.html#动态-Prop
+	/**
+	 * 动态-Prop https://cn.vuejs.org/v2/guide/components.html#动态-Prop
+	 */
 	var parentMsg;
 	new Vue({
 		el: "#ex07",
