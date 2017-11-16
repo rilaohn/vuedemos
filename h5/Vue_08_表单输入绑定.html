@@ -1,0 +1,159 @@
+<!--
+    Create by JetBrains IDEA
+    User: Etertops
+    Date: 2017/11/16
+    Time: 14:59
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,user-scalable=0">
+	<title>Vue 表单输入绑定</title>
+	<script src="../js/vue.js"></script>
+	<style>
+		.out{
+			overflow: hidden;
+			border: 1px solid powderblue;
+			width: auto;
+			padding: 0 10px 15px 15px;
+		}
+	</style>
+</head>
+<body>
+<div class="out" id="forms001">
+	<h3>基础用法</h3>
+	<input v-model="message" placeholder="edit me">
+	<p>Message is: {{ message }}</p>
+</div>
+<br>
+<div class="out" id="forms002">
+	<h3>多行文本</h3>
+	<span>Multiline message is:</span>
+	<p style="white-space: pre-line;">{{ message }}</p>
+	<br>
+	<textarea v-model="message" placeholder="add multiple lines">shuju</textarea>
+</div>
+<br>
+<div class="out" id="forms003">
+	<h3>复选框 单个</h3>
+	<input type="checkbox" id="checkbox" v-model="checked">
+	<label for="checkbox">{{ checked }}</label>
+</div>
+<br>
+<div class="out" id="forms004">
+	<h3>复选框  多个</h3>
+	<div id='example-3'>
+		<input type="checkbox" id="jack" value="Jack" v-model="checkedNames">
+		<label for="jack">Jack</label>
+		<input type="checkbox" id="john" value="John" v-model="checkedNames">
+		<label for="john">John</label>
+		<input type="checkbox" id="mike" value="Mike" v-model="checkedNames">
+		<label for="mike">Mike</label>
+		<br>
+		<span>Checked names: {{ checkedNames }}</span>
+	</div>
+</div>
+<br>
+<div class="out" id="forms005">
+	<h3>单选按钮</h3>
+	<input type="radio" id="one" value="One" v-model="picked" name="aaa">
+	<label for="one">One</label>
+	<br>
+	<input type="radio" id="two" value="Two" v-model="picked" name="bbb">
+	<label for="two">Two</label>
+	<br>
+	<span>Picked: {{ picked }}</span>
+</div>
+<br>
+<div class="out" id="forms006">
+	<h3>选择列表 单选</h3>
+	<select v-model="selected">
+		<option disabled value="">请选择</option>
+		<option>A</option>
+		<option>B</option>
+		<option>C</option>
+	</select>
+	<span>Selected: {{ selected }}</span>
+</div>
+<br>
+<div class="out" id="forms007">
+	<h3>选择列表  多选</h3>
+	<select v-model="selected" multiple style="width: 50px;">
+		<option>A</option>
+		<option>B</option>
+		<option>C</option>
+	</select>
+	<br>
+	<span>Selected: {{ selected }}</span>
+</div>
+<br>
+<div class="out" id="forms008">
+	<h3>选择列表  动态选项</h3>
+	<select v-model="selected">
+		<option v-for="option in options" :value="option.value">
+			{{ option.text }}
+		</option>
+	</select>
+	<span>Selected: {{ selected }}</span>
+</div>
+<br>
+<div class="out" id="forms009">
+	<h3>值绑定  动态属性 动态value值</h3>
+	<div>复选框
+		<input type="checkbox" v-model="toggle" :true-value="a" :false-value="b">
+		<span>Selected: {{ toggle }}</span>
+	</div>
+	<div>单选按钮
+		<input type="radio" v-model="pick" :value="c">
+		<input type="radio" v-model="pick" :value="d">
+		<span>Selected: {{ pick }}</span>
+	</div>
+	<div>选择列表的选项
+		<select v-model="selected">
+			<option :value="a">1111</option>
+			<option :value="b">2222</option>
+			<option :value="c">3333</option>
+			<option :value="d">4444</option>
+			<option :value="e">5555</option>
+		</select>
+		<span>Selected: {{ selected }}</span>
+	</div>
+	<div><input type="text" placeholder="修改A的值" v-model="a"></div>
+	<div><input type="text" placeholder="修改B的值" v-model="b"></div>
+	<div><input type="text" placeholder="修改C的值" v-model="c"></div>
+	<div><input type="text" placeholder="修改D的值" v-model="d"></div>
+</div>
+<br>
+<div class="out" id="forms010">
+	<h3>修饰符</h3>
+	<div><input v-model.lazy="msg1" placeholder="有.lazy修饰符"><span>输入的值是：<label style="border: 1px solid rebeccapurple">{{msg1}}</label></span></div>
+	<div><input v-model.number="msg2" placeholder="有.number修饰符"><span>输入的值是：<label style="border: 1px solid rebeccapurple">{{msg2}}</label></span></div>
+	<div><input v-model.trim="msg3" placeholder="有.trim修饰符"><span>输入的值是：<label style="border: 1px solid rebeccapurple">{{msg3}}</label></span></div>
+	<div><input v-model="msg" placeholder="没有修饰符"><span>输入的值是：<label style="border: 1px solid rebeccapurple">{{msg}}</label></span></div>
+</div>
+<br>
+<div class="out" id="forms011">
+	<h3></h3>
+</div>
+<br>
+<div class="out" id="forms012">
+	<h3></h3>
+</div>
+<br>
+<div class="out" id="forms013">
+	<h3></h3>
+</div>
+<br>
+<div class="out" id="forms014">
+	<h3></h3>
+</div>
+<br>
+<div class="out" id="forms015">
+	<h3></h3>
+</div>
+<br>
+<br>
+</body>
+<script src="../js/vue08.js"></script>
+</html>

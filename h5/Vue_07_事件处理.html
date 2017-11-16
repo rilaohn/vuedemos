@@ -1,0 +1,152 @@
+<!--
+    Create by JetBrains IDEA
+    User: Etertops
+    Date: 2017/11/16
+    Time: 10:02
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,user-scalable=0">
+	<title>Vue 事件处理</title>
+	<script src="../js/vue.js"></script>
+	<style>
+		.out{
+			overflow: hidden;
+			border: 1px solid powderblue;
+			width: auto;
+			padding: 0 10px 15px 15px;
+		}
+	</style>
+</head>
+<body>
+<div class="out" id="events001">
+	<h3>监听事件</h3>
+	<button @click="counter += 1">Add 1</button>
+	<p>The button above has been clicked {{ counter }} times.</p>
+</div>
+<br>
+<div class="out" id="events002">
+	<h3>事件处理方法</h3>
+	<!-- `greet` 是在下面定义的方法名 -->
+	<button @click="greet">Greet</button>
+</div>
+<br>
+<div class="out" id="events003">
+	<h3>内联处理器中的方法</h3>
+	<button @click="say('hi')">Say hi</button>
+	<button @click="say('what')">Say what</button>
+</div>
+<br>
+<div class="out" id="events004">
+	<h3>内联处理器中的方法</h3>
+	<button @click="warn('Form cannot be submitted yet.', $event)">
+		Submit
+	</button>
+</div>
+<br>
+<div class="out" id="events005">
+	<h3>事件修饰符</h3>
+	<!-- 阻止单击事件继续传播 -->
+	<div onclick="alert('冒泡 父元素')"><a @click.stop="doThis">.stop修饰符</a></div>
+	<div onclick="alert('冒泡 父元素')"><a @click="doThis">没有.stop修饰符</a></div>
+	<br>
+	<!-- 提交事件不再重载页面 -->
+	<form @submit.prevent="onSubmit" action="www.baidu.com">submit.prevent修饰符
+	<input type="submit" value="Submit">
+	</form>
+	<form @submit="onSubmit" action="www.baidu.com">没有submit.prevent修饰符
+		<input type="submit" value="Submit">
+	</form>
+	<br>
+	<!-- 修饰符可以串联 -->
+	<div onclick="alert('冒泡 父元素')"><a @click.stop.prevent="doThat" href="www.baidu.com">.stop.prevent修饰符,执行函数内容，阻止默认跳转，阻止冒泡</a></div>
+	<div onclick="alert('冒泡 父元素')"><a @click.prevent="doThat" href="www.baidu.com">.prevent修饰符,执行函数内容，阻止默认跳转，冒泡</a></div>
+	<div onclick="alert('冒泡 父元素')"><a @click.stop="doThat" href="www.baidu.com">.stop修饰符,执行函数内容，跳转，阻止冒泡</a></div>
+	<div onclick="alert('冒泡 父元素')"><a @click="doThat" href="www.baidu.com">没有修饰符,执行函数内容，跳转，冒泡</a></div>
+	<br>
+	<!-- 只有修饰符 -->
+	<div><a @click.prevent href="www.baidu.com">.preven修饰符</a></div>
+	<div><a @click href="www.baidu.com">没有.preven修饰符</a></div>
+	<br>
+	<!-- 添加事件监听器时使用事件捕获模式 -->
+	<!-- 即内部元素触发的事件先在此处处理，然后才交由内部元素自身进行处理 -->
+	<div @click.capture="doThis">.capture修饰符  自身元素<span onclick="alert('内部元素事件')" style="color: red">内部元素</span></div>
+	<div @click="doThis">没有.capture修饰符  自身元素<span onclick="alert('内部元素事件')" style="color: red">内部元素</span></div>
+	<br>
+	<!-- 只当在 event.target 是当前元素自身时触发处理函数 -->
+	<!-- 即事件不是从内部元素触发的 -->
+	<div @click.self="doThat">self修饰符   自身元素
+		<span  style="color: red">内部元素</span>
+	</div>
+	<div @click="doThat">没有self修饰符   自身元素
+		<span style="color: red">内部元素</span>
+	</div>
+	<br>
+	<div @click.once="doOnce">.once修饰符</div>
+	<div @click="doOnce">没有.once修饰符</div>
+</div>
+<br>
+<div class="out" id="events006">
+	<h3>按键修饰符</h3>
+	<input @keyup.enter="keyEvent" style="display: block" placeholder="回车键测试">
+	<input @keyup.tab="keyEvent" style="display: block" placeholder="tab键测试">
+	<input @keyup.delete="keyEvent" style="display: block" placeholder="删除或回退键测试">
+	<input @keyup.esc="keyEvent" style="display: block" placeholder="esc键测试">
+	<input @keyup.space="keyEvent" style="display: block" placeholder="空格键测试">
+	<input @keyup.up="keyEvent" style="display: block" placeholder="向上键测试">
+	<input @keyup.down="keyEvent" style="display: block" placeholder="向下键测试">
+	<input @keyup.left="keyEvent" style="display: block" placeholder="向左键测试">
+	<input @keyup.right="keyEvent" style="display: block" placeholder="向右键测试">
+	<input @keyup.f1="keyEvent" style="display: block" placeholder="自定义Crtl键测试">
+	<input @keyup.page-down="keyEvent" style="display: block" placeholder="自定义Crtl键测试">
+
+</div>
+<br>
+<div class="out" id="events007">
+	<h3>系统修饰键</h3>
+	<input @keyup.alt.67="clear" placeholder="Alt + C系统修饰键" style="display: block">
+	<div @click.ctrl="doSomething">Do something, 按住ctrl时点击</div>
+	<input @keyup.ctrl="clear" placeholder="ctrl单独" style="display: block" >
+</div>
+<br>
+<div class="out" id="events008">
+	<h3>.exact-修饰符</h3>
+	<button @click.ctrl="onClick">即使 Ctrl和 Alt 或 Shift 被一同按下时也会触发</button>
+	<button @click.ctrl.exact="onClick">仅在只有 Ctrl 被按下的时候触发 </button>
+</div>
+<br>
+<div class="out" id="event009">
+	<h3>鼠标按钮修饰符</h3>
+	<div @mouseup.left="events">鼠标 左 键修饰符测试</div>
+	<div @mouseup.right="events">鼠标 右 键修饰符测试</div>
+	<div @mouseup.midle="events">鼠标 中 键修饰符测试</div>
+</div>
+<br>
+<div>
+	<h2 id="为什么在-HTML-中监听事件">为什么在 HTML 中监听事件?</h2>
+	<p>你可能注意到这种事件监听的方式违背了关注点分离 (separation of concern) 这个长期以来的优良传统。但不必担心，因为所有的 Vue.js 事件处理方法和表达式都严格绑定在当前视图的 ViewModel 上，它不会导致任何维护上的困难。实际上，使用 <code>v-on</code> 有几个好处：</p>
+	<ol>
+		<li><p>扫一眼 HTML 模板便能轻松定位在 JavaScript 代码里对应的方法。</p>
+		</li>
+		<li><p>因为你无须在 JavaScript 里手动绑定事件，你的 ViewModel 代码可以是非常纯粹的逻辑，和 DOM 完全解耦，更易于测试。</p>
+		</li>
+		<li><p>当一个 ViewModel 被销毁时，所有的事件处理器都会自动被删除。你无须担心如何自己清理它们。</p>
+		</li>
+	</ol>
+</div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+</body>
+<script src="../js/vue07.js"></script>
+</html>

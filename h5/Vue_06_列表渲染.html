@@ -10,18 +10,100 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width,user-scalable=0">
 	<title>Vue 列表渲染</title>
-	<script src="../js/vue.js"/>
+	<script src="../js/vue.js"></script>
 </head>
 <body>
-<div>
-	<ul id="list001">
-		<li v-for="item in items">
-			{{ item.message }}
-		</li>
+<ul id="example-1">
+	<li v-for="item in items">
+		{{ item.message }}
+	</li>
+</ul>
+<br>
+<ul id="example-2">
+	<li v-for="(item, index) in items">
+		{{ parentMessage }} - {{ index }} - {{ item.message }}
+	</li>
+</ul>
+<br>
+<ul id="v-for-object" class="demo">
+	<li v-for="value in object">
+		{{ value }}
+	</li>
+</ul>
+<br>
+<div id="v-for-object2">
+	<div v-for="(value, key) in object">
+		{{ key }}: {{ value }}
+	</div>
+</div>
+<br>
+<div id="v-for-object3">
+	<div v-for="(value, key, index) in object">
+		{{ index }}. {{ key }}: {{ value }}
+	</div>
+</div>
+<br>
+<div id="list006">
+	<div v-for="item in items" :key="'key' + item.id">
+		message = "{{item.message}}", key = "{{item.id}}"
+	</div>
+	<div>{{reItems}}</div>
+	<button @click="raverseIndex">reverse items index</button>
+</div>
+<br>
+<div id="list007">
+	<div v-for="item in items">
+		message = "{{item.message}}", key = "{{item.id}}"
+	</div>
+	<div>{{reItems}}</div>
+	<button @click="raverseIndex">reverse items index</button>
+</div>
+<br>
+<div id="list008">
+	<div v-for="item in items">
+		message = "{{item.message}}", key = "{{item.id}}"
+	</div>
+	<div>{{reItems}}</div>
+	<button @click="raverseIndex">reverse items index</button>
+	<button @click="reduceLength">reduce length</button>
+	<button @click="addValue">add new value</button>
+</div>
+<br>
+<ul id="list009">
+	<li v-for="n in evenNumbers">{{ n }}</li>
+</ul>
+<br>
+<ul id="list010">
+	<li v-for="n in even(numbers)">{{ n }}</li>
+</ul>
+<br>
+<div id="list011">
+	<span v-for="n in 10">{{ n }} </span>
+</div>
+<br>
+<ul id="list012">
+	<template v-for="item in items">
+		<li>{{ item.msg }}</li>
+		<li class="divider">123</li>
+	</template>
+</ul>
+<br>
+<ul id="list013">
+	<li v-for="todo in todos" v-if="!todo.isComplete">
+		{{ todo }}
+	</li>
+</ul>
+<br>
+<div id="todo-list-example">
+	<input v-model="newTodoText" v-on:keyup.enter="addNewTodo" placeholder="Add a todo" >
+	<ul>
+		<li is="todo-item" v-for="(todo, index) in todos" v-bind:key="todo.id" v-bind:title="todo.title" v-on:remove="todos.splice(index, 1)"></li>
 	</ul>
 </div>
+<br>
+<br>
+<br>
+<br>
 </body>
-<script>
-
-</script>
+<script src="../js/vue06.js"></script>
 </html>
