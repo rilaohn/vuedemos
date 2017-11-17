@@ -113,16 +113,147 @@ Vue.component('child2', {
 	template: '<span>{{ myMessage }}</span>'
 });
 new Vue({
-	el: "#ex06"
+	el: "#components007"
 });
 
 /**
  * 动态-Prop https://cn.vuejs.org/v2/guide/components.html#动态-Prop
+ *
+ * 与绑定到任何普通的 HTML 特性相类似，我们可以用 v-bind 来动态地将 prop 绑定到父组件的数据。每当父组件的数据变化时，该变化也会传导给子组件
  */
-var parentMsg;
+Vue.component("todo-item", {
+	props:["text","isComplete"],
+	template: '<span>text = "{{text}}", is-complete = "{{isComplete}}"</span>'
+});
 new Vue({
-	el: "#ex07",
+	el: "#components008",
 	data: {
-		parentMsg: '输入内容测试'
+		parentMsg: '输入内容测试',
+		todo: {
+			text: 'Learn Vue',
+			isComplete: false
+		}
 	}
 });
+
+/**
+ * 字面量语法-vs-动态语法     https://cn.vuejs.org/v2/guide/components.html#字面量语法-vs-动态语法
+ */
+Vue.component("cop", {
+	props:["propA"],
+	template: '<div>字面量语法：5 + prop-a = {{5 + propA}}</div>'
+});
+new Vue({
+	el: "#components009"
+});
+
+/**
+ * 单向数据流    https://cn.vuejs.org/v2/guide/components.html#单向数据流
+ *
+ * Prop 是单向绑定的：当父组件的属性变化时，将传导给子组件，但是反过来不会。这是为了防止子组件无意间修改了父组件的状态，来避免应用的数据流变得难以理解。
+ * 另外，每次父组件更新时，子组件的所有 prop 都会更新为最新值。这意味着你不应该在子组件内部改变 prop。如果你这么做了，Vue 会在控制台给出警告。
+ * 在两种情况下，我们很容易忍不住想去修改 prop 中数据：
+ * 1.Prop 作为初始值传入后，子组件想把它当作局部数据来用；
+ * 2.Prop 作为原始数据传入，由子组件处理成其它数据输出
+ */
+new Vue({
+	el: "#components010",
+	components: {
+		"mc01": {
+			props: ["pa", "size"],
+			template: '<div><div>pa + 1 = {{pa + 1}}, pa = {{counter}}</div><div>{{normalizedSize}}</div></div>',
+			data: function () {
+				return {counter: this.pa}
+			},
+			computed: {
+				normalizedSize: function () {
+					return this.size.trim().toLowerCase()
+				}
+			}
+		}
+	}
+});
+
+/**
+ * Prop-验证    https://cn.vuejs.org/v2/guide/components.html#Prop-验证
+ *
+ * 我们可以为组件的 prop 指定验证规则。如果传入的数据不符合要求，Vue 会发出警告。这对于开发给他人使用的组件非常有用。
+ * 要指定验证规则，需要用对象的形式来定义 prop，而不能用字符串数组
+ * type 可以是下面原生构造器：String  Number  Boolean  Function  Object  Array  Symbol
+ * type 也可以是一个自定义构造器函数，使用 instanceof 检测。当 prop 验证失败，Vue 会抛出警告 (如果使用的是开发版本)。
+ * 注意 prop 会在组件实例创建之前进行校验，所以在 default 或 validator 函数里，诸如 data、computed 或 methods 等实例属性还无法使用
+ */
+Vue.component("prop-validate", {
+	props: {
+		pa: String,
+		pb: [String, Number],
+		pc: {
+			type: String,
+			required: true
+		},
+		pd: {
+			type: Number,
+			default: 100
+		},
+		pe: {
+			type: Object,
+			default: function () {
+				return { message: 'hello' }
+			}
+		},
+		pf: {
+			validator: function (value) {
+				return value > 10
+			}
+		}
+	},
+	template: "<div>pa={{pa}},pb={{pb}},pc={{pc}},pd={{pd}},pe={{pe}},pf={{pf}}</div>"
+});
+new Vue({
+	el:"#components011"
+});
+
+/**
+ * 非-Prop-特性    https://cn.vuejs.org/v2/guide/components.html#非-Prop-特性
+ *
+ * 试例中newp自动追加到了div上
+ */
+new Vue({
+	el:"#components012"
+});
+
+/**
+ * 替换-合并现有的特性    https://cn.vuejs.org/v2/guide/components.html#替换-合并现有的特性
+ *
+ * 试例中class="aaa bbb"
+ */
+new Vue({
+	el: "#components013",
+	components: {
+		"mc01": {
+			props: ["pa", "size"],
+			template: '<div class="aaa">456</div>',
+		}
+	}
+});
+
+/**
+ * 自定义事件    https://cn.vuejs.org/v2/guide/components.html#自定义事件
+ * 我们知道，父组件使用 prop 传递数据给子组件。但子组件怎么跟父组件通信呢？这个时候 Vue 的自定义事件系统就派得上用场了。
+ */
+
+/**
+ * 使用-v-on-绑定自定义事件    https://cn.vuejs.org/v2/guide/components.html#使用-v-on-绑定自定义事件
+ *
+ * 每个 Vue 实例都实现了事件接口，即： 使用 $on(eventName) 监听事件，使用 $emit(eventName) 触发事件
+ * Vue 的事件系统与浏览器的 EventTarget API 有所不同。尽管它们的运行起来类似，但是 $on 和 $emit 并不是addEventListener 和 dispatchEvent 的别名。
+ * 另外，父组件可以在使用子组件的地方直接用 v-on 来监听子组件触发的事件。
+ * 不能用 $on 侦听子组件释放的事件，而必须在模板里直接用 v-on 绑定
+ */
+
+
+
+
+
+
+

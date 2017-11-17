@@ -66,30 +66,43 @@
 <br>
 <div class="out" id="components007">
 	<h3>camelCase vs. kebab-case， 驼峰式命名 对比 短横线分隔式命名</h3>
+	<child2 my-message="hello!"></child2>
 </div>
 <br>
 <div class="out" id="components008">
-	<h3></h3>
+	<h3>动态-Prop</h3>
+	<div>
+		<input v-model="parentMsg">
+		<br>
+		<child2 v-bind:my-message="parentMsg"></child2>
+		<todo-item v-bind="todo"></todo-item>
+	</div>
 </div>
 <br>
 <div class="out" id="components009">
-	<h3></h3>
+	<h3>字面量语法-vs-动态语法</h3>
+	<cop prop-a="1"></cop>
+	<cop :prop-a="1"></cop>
 </div>
 <br>
 <div class="out" id="components010">
-	<h3></h3>
+	<h3>单向数据流</h3>
+	<mc01 :pa="7" size='ABCD'></mc01>
 </div>
 <br>
 <div class="out" id="components011">
-	<h3></h3>
+	<h3>Prop-验证</h3>
+	<prop-validate pa="hi" pb=1, pc="hello" pe="{message: 'world', id: '456'}" pf="9"></prop-validate>
 </div>
 <br>
 <div class="out" id="components012">
-	<h3></h3>
+	<h3>非-Prop-特性</h3>
+	<prop-validate pa="hi" pb=1, pc="hello" pe="{message: 'world', id: '456'}" pf="9" newp="kkk"></prop-validate>
 </div>
 <br>
 <div class="out" id="components013">
-	<h3></h3>
+	<h3>替换-合并现有的特性</h3>
+	<mc01 class="bbb"></mc01>
 </div>
 <br>
 <div class="out" id="components014">
@@ -137,6 +150,50 @@
 </div>
 <br>
 <div class="out" id="components025">
+	<h3></h3>
+</div>
+<br>
+<div class="out" id="components026">
+	<h3></h3>
+</div>
+<br>
+<div class="out" id="components027">
+	<h3></h3>
+</div>
+<br>
+<div class="out" id="components028">
+	<h3></h3>
+</div>
+<br>
+<div class="out" id="components029">
+	<h3></h3>
+</div>
+<br>
+<div class="out" id="components030">
+	<h3></h3>
+</div>
+<br>
+<div class="out" id="components031">
+	<h3></h3>
+</div>
+<br>
+<div class="out" id="components032">
+	<h3></h3>
+</div>
+<br>
+<div class="out" id="components033">
+	<h3></h3>
+</div>
+<br>
+<div class="out" id="components034">
+	<h3></h3>
+</div>
+<br>
+<div class="out" id="components035">
+	<h3></h3>
+</div>
+<br>
+<div class="out" id="components036">
 	<h3></h3>
 </div>
 <br>
