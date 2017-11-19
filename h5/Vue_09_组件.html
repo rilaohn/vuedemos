@@ -92,12 +92,12 @@
 <br>
 <div class="out" id="components011">
 	<h3>Prop-验证</h3>
-	<prop-validate pa="hi" pb=1, pc="hello" pe="{message: 'world', id: '456'}" pf="9"></prop-validate>
+	<prop-validate pa="hi" pb=1, pc="hello" :pe="obj" :pf="19"></prop-validate>
 </div>
 <br>
 <div class="out" id="components012">
 	<h3>非-Prop-特性</h3>
-	<prop-validate pa="hi" pb=1, pc="hello" pe="{message: 'world', id: '456'}" pf="9" newp="kkk"></prop-validate>
+	<prop-validate pa="hi" pb=1, pc="hello" :pe="obj" :pf="19" newp="kkk"></prop-validate>
 </div>
 <br>
 <div class="out" id="components013">
@@ -106,39 +106,79 @@
 </div>
 <br>
 <div class="out" id="components014">
-	<h3></h3>
+	<h3>使用v-on绑定自定义事件</h3>
+	<p>{{ total }}</p>
+	<button-counter v-on:increment="incrementTotal"></button-counter>
+	<button-counter v-on:increment="incrementTotal"></button-counter>
 </div>
 <br>
 <div class="out" id="components015">
-	<h3></h3>
+	<h3>给组件绑定原生事件</h3>
+	<mc03 v-on:click.native="doo"></mc03>
 </div>
+<mc03 v-on:click.native="doo" id="components015-1"></mc03>
 <br>
 <div class="out" id="components016">
-	<h3></h3>
+	<h3>.sync 修饰符</h3>
+	<comp :foo.sync="bar"></comp>
 </div>
 <br>
 <div class="out" id="components017">
-	<h3></h3>
+	<h3>使用自定义事件的表单输入组件</h3>
+	<currency-input v-model="price"></currency-input>
+	<div>input组件value值：{{price}}</div>
 </div>
 <br>
 <div class="out" id="components018">
-	<h3></h3>
+	<h3>自定义组件的v-model</h3>
+	<my-checkbox v-model="checked" value="aaa" :checked="false"></my-checkbox>
+	<div>value = {{checked}}</div>
 </div>
 <br>
 <div class="out" id="components019">
-	<h3></h3>
+	<h3>非父子组件的通信</h3>
+	<a href="https://segmentfault.com/a/1190000008042320">非父子组件的通信</a>
 </div>
 <br>
 <div class="out" id="components020">
-	<h3></h3>
+	<h3>使用插槽分发内容 编译作用域 单个插槽</h3>
+	<comp01>{{message}}</comp01>
+	<comp02></comp02>
+	<comp02>{{message}}</comp02>
 </div>
 <br>
 <div class="out" id="components021">
-	<h3></h3>
+	<h3>具名插槽</h3>
+	<comp03>
+		<h6 slot="s2">world</h6>
+		<div>abc</div>
+		<p slot="s1">hello</p>
+	</comp03>
 </div>
 <br>
 <div class="out" id="components022">
-	<h3></h3>
+	<h3>作用域插槽</h3>
+	<div class="parent">
+		<comp04>
+			<template slot-scope="props">
+				<div>hello from parent</div>
+				<span>{{ props.text }}</span>
+			</template>
+		</comp04>
+	</div>
+	<br>
+	任意元素中使用slot-scope：
+	<div>
+		<comp05 :items="items">
+			<li slot="item" slot-scope="props" class="my-fancy-item"> {{ props.text }} </li>
+		</comp05>
+	</div>
+	ES2015 表达式解构：
+	<div>
+		<comp05 :items="items">
+			<li slot="item" slot-scope="{text}" class="my-fancy-item"> {{ text }} </li>
+		</comp05>
+	</div>
 </div>
 <br>
 <div class="out" id="components023">

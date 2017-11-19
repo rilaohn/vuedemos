@@ -192,8 +192,8 @@ Vue.component("prop-validate", {
 			required: true
 		},
 		pd: {
-			type: Number,
-			default: 100
+			type: Boolean,
+			default: false
 		},
 		pe: {
 			type: Object,
@@ -209,8 +209,32 @@ Vue.component("prop-validate", {
 	},
 	template: "<div>pa={{pa}},pb={{pb}},pc={{pc}},pd={{pd}},pe={{pe}},pf={{pf}}</div>"
 });
+
+Vue.component("prop-test", {
+	template: '<input :value="value" :checked="checked" type="checkbox"/>',
+	model: {
+		prop: 'checked',
+		event: 'change',
+	},
+	props: {
+		checked: {
+			type: Boolean,
+			default: false
+		},
+		value: String
+	},
+	created: function () {
+		console.log(this.checked)
+	},
+});
 new Vue({
-	el:"#components011"
+	el:"#components011",
+	data: {
+		obj: {
+			message: 'world',
+			id: '456'
+		}
+	}
 });
 
 /**
@@ -219,7 +243,13 @@ new Vue({
  * 试例中newp自动追加到了div上
  */
 new Vue({
-	el:"#components012"
+	el:"#components012",
+	data: {
+		obj: {
+			message: 'world',
+			id: '456'
+		}
+	}
 });
 
 /**
@@ -250,10 +280,234 @@ new Vue({
  * 另外，父组件可以在使用子组件的地方直接用 v-on 来监听子组件触发的事件。
  * 不能用 $on 侦听子组件释放的事件，而必须在模板里直接用 v-on 绑定
  */
+Vue.component('button-counter', {
+	template: '<button v-on:click="incrementCounter">{{ counter }}</button>',
+	data: function () {
+		return {
+			counter: 0
+		}
+	},
+	methods: {
+		incrementCounter: function () {
+			this.counter += 1;
+			this.$emit('increment')
+		}
+	},
+});
+new Vue({
+	el: '#components014',
+	data: {
+		total: 0
+	},
+	methods: {
+		incrementTotal: function () {
+			this.total += 1
+		}
+	}
+});
+
+/**
+ * 给组件绑定原生事件   https://cn.vuejs.org/v2/guide/components.html#给组件绑定原生事
+ *
+ * 有时候，你可能想在某个组件的根元素上监听一个原生事件。可以使用 v-on 的修饰符 .native
+ * 通过结果是components015 doo，也就是使用.native并不会调用组件自身的方法，而是Vue实例的相应方法
+ */
+Vue.component('mc03', {
+	template: "<div>{{text}}</div>",
+	data: function () {
+		return {
+			text: 'test text'
+		};
+	},
+	methods: {
+		doo: function () {
+			alert("mc03 doo");
+		}
+	},
+});
+new Vue({
+	el: "#components015",
+	methods: {
+		doo: function () {
+			alert("components015 doo");
+		}
+	},
+});
+new Vue({
+	el: "#components015-1",
+});
+
+/**
+ * sync-修饰符    https://cn.vuejs.org/v2/guide/components.html#sync-修饰符
+ *
+ * 使用updateFooByEmit一切正常，但使用updateFoo时，虽然更新的foo的值，但是报错：
+ * [Vue warn]: Avoid mutating a prop directly since the value will be overwritten whenever the parent component
+ * re-renders. Instead, use a data or computed property based on the prop's value. Prop being mutated: "foo"
+ */
+Vue.component("comp", {
+	props: ["foo"],
+	template: '<div><div>foo = "{{foo}}"</div><button @click="updateFoo">update foo</button>' +
+	'<button @click="updateFooByEmit">update foo by $emit</button></div>',
+	methods: {
+		updateFoo: function () {
+			this.foo = this.foo.toUpperCase();
+		},
+		updateFooByEmit: function () {
+			this.$emit('update:foo', this.foo.toUpperCase())
+		}
+	},
+});
+new Vue({
+	el: "#components016",
+	data: {
+		bar: "bar"
+	}
+});
+
+/**
+ * 使用自定义事件的表单输入组件    https://cn.vuejs.org/v2/guide/components.html#使用自定义事件的表单输入组件
+ */
+Vue.component('currency-input', {
+	template: '<span>$<input type="number" ref="input123" :value="value" @input="updateValue($event.target.value)"/></span>',
+	props: ['value'],
+	methods: {
+		// 不是直接更新值，而是使用此方法来对输入值进行格式化和位数限制
+		updateValue: function (value) {
+			var formattedValue = value.trim()
+				.slice(0, value.indexOf('.') === -1 ? value.length : value.indexOf('.') + 3);
+			// 如果值尚不合规，则手动覆盖为合规的值
+			if (formattedValue !== value) {
+				this.$refs.input123.value = formattedValue
+			}
+			// 通过 input 事件带出数值
+			this.$emit('input', Number(formattedValue));
+		}
+	}
+})
+
+new Vue({
+	el: "#components017",
+	data: {
+		price: ''
+	}
+});
+
+/**
+ * 自定义组件的-v-model    https://cn.vuejs.org/v2/guide/components.html#自定义组件的-v-model
+ *
+ * 默认情况下，一个组件的 v-model 会使用 value prop 和 input 事件。但是诸如单选框、复选框之类的输入类型可能把
+ * value 用作了别的目的。model 选项可以避免这样的冲突
+ *
+ * 在html中通过:checked="false"给my-checkbox设置checked并没有效果，my-checkbox的checked prop值来自于
+ *  v-model="checked"，new Vue({el: "#components018", data: {checked: ""}中的checked值，所以当使用自定义组件
+ *  中有model时，v-model将会动态的与组件中的model属性中的prop数据动态绑定，如果组件中的model属性中prop是props时,
+ *  如：model: {props: ['checked', 'aa'], event: 'change',}将不会动态绑定到props的checked属性上，并警告应返回value
+ *  此时在html中通过:checked="false"给my-checkbox设置checked并有效果,在model中设置props会导致无法获取value.
+ *  model中的prop和event有很强的耦合，当使用this.$emit('change', 返回值)返回是，会根据prop的类型做判断，所以当你返回value时，
+ *  会抛出异常，说Expected Boolean, got Array，当在html中重复使用my-checkbox，返回的还是checkbos，与原有组件返回value值不同
+});
+ */
+Vue.component('my-checkbox', {
+	template: '<input :value="value" type="checkbox" v-model="inputCheck" @change="hasChange">',
+	model: {
+		prop: 'checked',
+		event: 'change',
+	},
+	props: {
+		checked: {
+			type: Boolean,
+			default: false
+		},
+		// 这样就允许拿 `value` 这个 prop 做其它事了
+		value: String
+	},
+	mounted: function () {
+		console.log("mounted: checked = " + this.checked);
+		if (this.checked)
+			this.inputCheck = true;
+	},
+	data: function () {
+		return {inputCheck: false}
+	},
+	methods: {
+		hasChange: function () {
+			console.log(this.inputCheck);
+			this.$emit('change', this.inputCheck)
+		}
+	}
+});
+new Vue({
+	el: "#components018",
+	data: {
+		checked: ""
+	}
+});
 
 
+/**
+ * 非父子组件的通信     https://cn.vuejs.org/v2/guide/components.html#非父子组件的通信
+ */
 
 
+/**
+ * 使用插槽分发内容    https://cn.vuejs.org/v2/guide/components.html#使用插槽分发内容
+ */
+/**
+ * 编译作用域    https://cn.vuejs.org/v2/guide/components.html#编译作用域
+ */
+/**
+ * 单个插槽    https://cn.vuejs.org/v2/guide/components.html#单个插槽
+ */
+Vue.component("comp01",{
+	template: '<div>123</div>'
+});
+Vue.component("comp02",{
+	template: '<div>123<slot>789</slot></div>'
+});
+new Vue({
+	el: "#components020",
+	data: {
+		message: "456"
+	}
+});
+
+/**
+ * 具名插槽    https://cn.vuejs.org/v2/guide/components.html#具名插槽
+ * <slot> 元素可以用一个特殊的特性 name 来进一步配置如何分发内容。多个插槽可以有不同的名字。具名插槽将匹配内容片段中有对应 slot 特性的元素。
+ * 仍然可以有一个匿名插槽，它是默认插槽，作为找不到匹配的内容片段的备用插槽。如果没有默认插槽，这些找不到匹配的内容片段将被抛弃。
+ */
+Vue.component("comp03",{
+	template: '<div><slot></slot><slot name="s1"></slot><slot name="s2"></slot></div>'
+});
+new Vue({
+	el: "#components021",
+});
+
+/**
+ * 作用域插槽    https://cn.vuejs.org/v2/guide/components.html#作用域插槽
+ */
+Vue.component("comp04",{
+	template: '<div class="child"><slot text="hello from child"></slot></div>'
+});
+Vue.component("comp05",{
+	template: '<ul><slot name="item" v-for="item in items" :text="item.text"></slot></ul>',
+	props: {
+		items: Array
+	}
+});
+new Vue({
+	el: "#components022",
+	data: {
+		items: [
+			{text: "aaaa"},
+			{text: "bbbb"},
+			{text: "cccc"},
+			{text: "dddd"},
+			{text: "eeee"},
+			{text: "ffff"},
+		]
+	}
+});
 
 
 
