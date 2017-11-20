@@ -509,5 +509,145 @@ new Vue({
 	}
 });
 
+/**
+ * 动态组件    https://cn.vuejs.org/v2/guide/components.html#动态组件
+ */
+var vm = new Vue({
+	el: '#components023',
+	data: {
+		currentView: 'home'
+	},
+	components: {
+		home: {
+			template: '<div>456</div>'
+		},
+		posts: { /* ... */ },
+		archive: { /* ... */ }
+	}
+});
+
+/**
+ * keep-alive    https://cn.vuejs.org/v2/guide/components.html#keep-alive
+ *
+ * 如果把切换出去的组件保留在内存中，可以保留它的状态或避免重新渲染。为此可以添加一个 keep-alive 指令参数
+ *
+ * 请查看控制台打印的内容来对比有keep alive和没有keep alive的不同
+ */
+var vm = new Vue({
+	el: '#components024',
+	data: {
+		currentView: 'home',
+		showHome: true
+	},
+	components: {
+		home: {
+			template: '<div>keep-alive包裹的元素</div>',
+			created: function () {
+				console.log("home component created");
+			},
+			mounted: function () {
+				console.log("home component mounted");
+			},
+			updated: function () {
+				console.log("home component updated");
+			},
+			destroyed: function () {
+				console.log("home component updated");
+			},
+			activated: function () {
+				console.log("home component activated");
+			},
+			deactivated: function () {
+				console.log("home component deactivated");
+			}
+		},
+		"home-out": {
+			template: '<div>keep-alive外的div组件</div>',
+			created: function () {
+				console.log("home-out component created");
+			},
+			mounted: function () {
+				console.log("home-out component mounted");
+			},
+			updated: function () {
+				console.log("home-out component updated");
+			},
+			destroyed: function () {
+				console.log("home-out component updated");
+			},
+			activated: function () {
+				console.log("home-out  component activated");
+			},
+			deactivated: function () {
+				console.log("home-out  component deactivated");
+			}
+		}
+	},
+	methods: {
+		toggleShow: function () {
+			this.showHome = this.showHome ? false : true;
+		}
+	}
+});
+
+/**
+ * 编写可复用组件    https://cn.vuejs.org/v2/guide/components.html#编写可复用组件
+ *
+ * 在编写组件时，最好考虑好以后是否要进行复用。一次性组件间有紧密的耦合没关系，但是可复用组件应当定义一个清晰的公开接口，
+ * 同时也不要对其使用的外层数据作出任何假设。Vue 组件的 API 来自三部分——prop、事件和插槽：
+ * 1.Prop 允许外部环境传递数据给组件； 2.事件允许从组件内触发外部环境的副作用； 3.插槽允许外部环境将额外的内容组合在组件中。
+ */
+Vue.component("icontab", {
+	template: '<div style="width: 100px"><div><slot name="icon"></slot></div><div style="text-align: center"><slot name="text"></slot></div></div>'
+});
+new Vue({
+	el: "#components025",
+});
+
+/**
+ * 子组件引用    https://cn.vuejs.org/v2/guide/components.html#子组件引用
+ *
+ * 尽管有 prop 和事件，但是有时仍然需要在 JavaScript 中直接访问子组件。为此可以使用 ref 为子组件指定一个引用 ID。
+ */
+var components026 = new Vue({
+	el: '#components026',
+	components: {
+		"user-profile": {
+			props: ["say"],
+			template: '<div>user profile text, has = {{say}}</div>'
+		},
+	},
+});
+new Vue({
+	el: '#components027',
+	data: {
+		talkdata: 'hello world！'
+	},
+	methods: {
+		changeProfileSay: function () {
+			var temp = components026.$refs.profile;
+			console.log(temp);
+			console.log(temp._props);
+			console.log(temp._props.say);
+			temp.say = this.talkdata;
+		}
+	}
+});
+
+/**
+ * 异步组件    https://cn.vuejs.org/v2/guide/components.html#异步组件
+ */
+
+/**
+ * 高级异步组件    https://cn.vuejs.org/v2/guide/components.html#高级异步组件
+ */
+
+/**
+ * 组件命名约定    https://cn.vuejs.org/v2/guide/components.html#组件命名约定
+ */
+
+/**
+ * 递归组件    https://cn.vuejs.org/v2/guide/components.html#递归组件
+ */
 
 

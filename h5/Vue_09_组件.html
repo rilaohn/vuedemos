@@ -182,39 +182,57 @@
 </div>
 <br>
 <div class="out" id="components023">
-	<h3></h3>
+	<h3>动态组件</h3>
+	<component :is="currentView"></component>
 </div>
 <br>
 <div class="out" id="components024">
-	<h3></h3>
+	<h3>keep-alive</h3>
+	<home-out v-if="showHome"></home-out>
+	<keep-alive>
+		<component :is="currentView" v-if="showHome"></component>
+	</keep-alive>
+	<button @click="toggleShow">toggle show</button>
 </div>
 <br>
 <div class="out" id="components025">
-	<h3></h3>
+	<h3>编写可复用组件</h3>
+	<icontab>
+		<img slot="icon" src="../images/hbqs.png" style="width: 100%">
+		<p slot="text">花边骑士</p>
+	</icontab>
 </div>
 <br>
 <div class="out" id="components026">
-	<h3></h3>
+	<h3>子组件引用</h3>
+	同过js获取
+	<user-profile ref="profile" say="hello world！"></user-profile>
 </div>
 <br>
 <div class="out" id="components027">
-	<h3></h3>
+	<h3>子组件引用 联动上一个例子</h3>
+	<div><input v-model="talkdata" @input="changeProfileSay"></div>
+	<div>虽然能改变prop say的值，但是vue回报异常，因为我们不应该从外部动态改变prop值</div>
 </div>
 <br>
 <div class="out" id="components028">
-	<h3></h3>
+	<h3>异步组件</h3>
+	示例还没有准备好
 </div>
 <br>
 <div class="out" id="components029">
-	<h3></h3>
+	<h3>高级异步组件</h3>
+	示例还没有准备好
 </div>
 <br>
 <div class="out" id="components030">
-	<h3></h3>
+	<h3>组件命名约定</h3>
+	<a href="https://cn.vuejs.org/v2/guide/components.html#组件命名约定">组件命名约定</a>
 </div>
 <br>
 <div class="out" id="components031">
-	<h3></h3>
+	<h3>递归组件</h3>
+	示例还没有准备好
 </div>
 <br>
 <div class="out" id="components032">
