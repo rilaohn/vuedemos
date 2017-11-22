@@ -57,6 +57,172 @@ new Vue({
 /**
  * CSS-动画    https://cn.vuejs.org/v2/guide/transitions.html#CSS-动画
  */
+new Vue({
+	el: '#transitions003',
+	data: {
+		show: true
+	}
+});
 
+/**
+ * 自定义过渡的类名    https://cn.vuejs.org/v2/guide/transitions.html#自定义过渡的类名
+ *
+ * 我们可以通过以下特性来自定义过渡类名：
+ * 1.enter-class 	2.enter-active-class 	3.enter-to-class (2.1.8+)
+ * 4.leave-class 	5.leave-active-class 	6.leave-to-class (2.1.8+)
+ * 他们的优先级高于普通的类名，这对于 Vue 的过渡系统和其他第三方 CSS 动画库，如 Animate.css 结合使用十分有用
+ */
+new Vue({
+	el: '#transitions004',
+	data: {
+		show: true
+	}
+});
 
+/**
+ * 同时使用过渡和动画    https://cn.vuejs.org/v2/guide/transitions.html#同时使用过渡和动画
+ *
+ * Vue 为了知道过渡的完成，必须设置相应的事件监听器。它可以是 transitionend 或 animationend ，
+ * 这取决于给元素应用的 CSS 规则。如果你使用其中任何一种，Vue 能自动识别类型并设置监听。
+ * 但是，在一些场景中，你需要给同一个元素同时设置两种过渡动效，比如 animation 很快的被触发并完成了，而 transition 效果还没结束。
+ * 在这种情况中，你就需要使用 type 特性并设置 animation 或 transition 来明确声明你需要 Vue 监听的类型。
+ */
+new Vue({
+	el: '#transitions005',
+	data: {
+		show: true,
+		showAT: true,
+		showATM: true
+	}
+});
+
+/**
+ * 显性的过渡持续时间    https://cn.vuejs.org/v2/guide/transitions.html#显性的过渡持续时间
+ *
+ * 在很多情况下，Vue 可以自动得出过渡效果的完成时机。默认情况下，Vue 会等待其在过渡效果的根元素的第一个 transitionend
+ * 或 animationend 事件。然而也可以不这样设定——比如，我们可以拥有一个精
+ * 在这种情况下你可以用 <transition> 组件上的 duration 属性定制一个显性的过渡持续时间 (以毫秒计)
+ */
+new Vue({
+	el: '#transitions006',
+	data: {
+		show: true,
+		show1: true,
+	}
+});
+
+/**
+ * JavaScript-钩子    https://cn.vuejs.org/v2/guide/transitions.html#JavaScript-钩子
+ */
+new Vue({
+	el: '#transitions007',
+	data: {
+		show: true,
+		showB: false,
+		str: ''
+	},
+	methods: {
+		// --------
+		// 进入中
+		// --------
+		beforeEnter: function (el) {
+			el.style.opacity = 0;
+			el.style.transformOrigin = 'left';
+			this.str = this.str + "A ";
+			console.log("beforeEnter");
+			console.log(el);
+		},
+		// 此回调函数是可选项的设置
+		// 与 CSS 结合时使用
+		enter: function (el, done) {
+			Velocity(el, { opacity: 1, fontSize: '1.4em' }, { duration: 300 })
+			Velocity(el, { fontSize: '1em' }, { complete: done })
+			this.str = this.str + "B ";
+			console.log("enter");
+			console.log(el);
+			done()
+		},
+		afterEnter: function (el) {
+			this.str = this.str + "C ";
+			console.log("afterEnter");
+			console.log(el);
+		},
+		enterCancelled: function (el) {
+			this.str = this.str + "D ";
+			console.log("enterCancelled");
+			console.log(el);
+		},
+		// --------
+		// 离开时
+		// --------
+		beforeLeave: function (el) {
+			this.str = this.str + 1 + " ";
+			console.log("beforeLeave");
+			console.log(el);
+		},
+		// 此回调函数是可选项的设置
+		// 与 CSS 结合时使用
+		leave: function (el, done) {
+			this.str = this.str + 2 + " ";
+			console.log("leave");
+			console.log(el);
+			Velocity(el, { translateX: '15px', rotateZ: '50deg' }, { duration: 600 });
+			Velocity(el, { rotateZ: '100deg' }, { loop: 2 });
+			Velocity(el, {
+				rotateZ: '45deg',
+				translateY: '30px',
+				translateX: '30px',
+				opacity: 0
+			}, { complete: done })
+		},
+		afterLeave: function (el) {
+			this.str = this.str + 3 + " ";
+			console.log("afterLeave");
+			console.log(el);
+		},
+		// leaveCancelled 只用于 v-show 中
+		leaveCancelled: function (el) {
+			this.str = this.str + 4 + " ";
+			console.log("leaveCancelled");
+			console.log(el);
+		},
+	}
+});
+
+/**
+ * 初始渲染的过渡    https://cn.vuejs.org/v2/guide/transitions.html#初始渲染的过渡
+ */
+new Vue({
+	el: '#transitions008',
+	data: {
+		showA: true,
+		showB: true,
+	},
+	methods: {
+		customBeforeAppearHook: function (el) {
+			console.log("customBeforeAppearHook");
+			console.log(el);
+			el.style.opacity = 0;
+			el.style.transformOrigin = 'left';
+		},
+		customAppearHook: function (el, done) {
+			console.log("customAppearHook");
+			console.log(el);
+			Velocity(el, { opacity: 1, fontSize: '1.4em' }, { duration: 300 });
+			Velocity(el, { fontSize: '1em' }, { complete: done });
+		},
+		customAfterAppearHook: function (el) {
+			console.log("customAfterAppearHook");
+			console.log(el);
+		},
+		customAppearCancelledHook: function (el) {
+			console.log("customAppearCancelledHook");
+			console.log(el);
+		}
+	}
+});
+
+/**
+ * 多个元素的过渡    https://cn.vuejs.org/v2/guide/transitions.html#多个元素的过渡
+ */
 

@@ -12,11 +12,13 @@
 	<script src="../js/vue.js"></script>
 	<title>进入/离开 & 列表过渡</title>
 	<link href="../css/vuedemos.css" type="text/css" rel="stylesheet">
+	<link href="https://cdn.jsdelivr.net/npm/animate.css@3.5.1" rel="stylesheet" type="text/css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/velocity/1.2.3/velocity.min.js"></script>
 </head>
 <body>
 <div class="out" id="transitions001">
 	<h3>单元素-组件的过渡</h3>
-	<button v-on:click="show = !show">
+	<button @click="show = !show">
 		Toggle
 	</button>
 	<transition name="fade">
@@ -35,31 +37,134 @@
 </div>
 <br>
 <div class="out" id="transitions003">
-	<h3></h3>
+	<h3>CSS-动画</h3>
+	<button @click="show = !show">Toggle show</button>
+	<transition name="bounce">
+		<p v-if="show">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris facilisis enim libero, at lacinia diam fermentum id. Pellentesque habitant morbi tristique senectus et netus.</p>
+	</transition>
 </div>
 <br>
 <div class="out" id="transitions004">
-	<h3></h3>
+	<h3>自定义过渡的类名</h3>
+	<button @click="show = !show">
+		Toggle render
+	</button>
+	<transition
+			name="custom-classes-transition"
+			enter-active-class="animated tada"
+			leave-active-class="animated bounceOutRight">
+		<p v-if="show">hello</p>
+	</transition>
 </div>
 <br>
 <div class="out" id="transitions005">
-	<h3></h3>
+	<h3>同时使用过渡和动画</h3>
+	<div style="float: left">
+		<button @click="show = !show">
+			不设type值
+		</button>
+		<transition name="sat">
+			<p v-if="show">hello</p>
+		</transition>
+	</div>
+	<div style="float: left">
+		<button @click="showAT = !showAT">
+			type监听animation
+		</button>
+		<transition name="sat" type="animation">
+			<p v-if="showAT">hello</p>
+		</transition>
+	</div>
+	<div style="float: left">
+		<button @click="showATM = !showATM">
+			type监听transition
+		</button>
+		<transition name="sat" type="transition">
+			<p v-if="showATM">hello</p>
+		</transition>
+	</div>
 </div>
 <br>
 <div class="out" id="transitions006">
-	<h3></h3>
+	<h3>显性的过渡持续时间</h3>
+	<div style="float: left">
+		<button @click="show = !show">
+			duration值1000
+		</button>
+		<transition name="slide-fade" :duration="1000">
+			<p v-if="show">hello</p>
+		</transition>
+	</div>
+	<div style="float: left">
+		<button @click="show1 = !show1">
+			duration值{ enter: 500, leave: 2500 }
+		</button>
+		<transition name="slide-fade" :duration="{ enter: 500, leave: 2500 }">
+			<p v-if="show1">hello</p>
+		</transition>
+	</div>
 </div>
 <br>
 <div class="out" id="transitions007">
 	<h3></h3>
+	<div>
+		<button @click="show = !show">
+			toggle show
+		</button>
+		<transition v-on:before-enter="beforeEnter" v-on:enter="enter" v-on:after-enter="afterEnter"
+					v-on:enter-cancelled="enterCancelled" v-on:before-leave="beforeLeave" v-on:leave="leave"
+					v-on:after-leave="afterLeave" v-on:leave-cancelled="leaveCancelled">
+			<p v-if="show">hello</p>
+		</transition>
+	</div>
+	{{str}}
+	<div>
+		<button @click="showB = !showB">
+			Toggle
+		</button>
+		<transition v-on:before-enter="beforeEnter" v-on:enter="enter" v-on:leave="leave" v-bind:css="false">
+			<p v-if="showB">
+				Demo
+			</p>
+		</transition>
+	</div>
 </div>
 <br>
 <div class="out" id="transitions008">
-	<h3></h3>
+	<h3>初始渲染的过渡</h3>
+	<div>
+		<button @click="showA = !showA">
+			Toggle Show A
+		</button>
+		<transition
+				appear
+				appear-class="custom-appear-class"
+				appear-to-class="custom-appear-to-class" (2.1.8+)
+				appear-active-class="custom-appear-active-class">
+			<p v-if="showA">
+				Demo
+			</p>
+		</transition>
+	</div>
+	<div>
+		<button @click="showB = !showB">
+			Toggle Show B
+		</button>
+		<transition
+				appear
+				v-on:before-appear="customBeforeAppearHook"
+				v-on:appear="customAppearHook"
+				v-on:after-appear="customAfterAppearHook"
+				v-on:appear-cancelled="customAppearCancelledHook">
+			<p v-if="showB">
+				Demo
+			</p>
+		</transition>
+	</div>
 </div>
 <br>
 <div class="out" id="transitions009">
-	<h3></h3>
+	<h3>多个元素的过渡</h3>
 </div>
 <br>
 <div class="out" id="transitions010">
