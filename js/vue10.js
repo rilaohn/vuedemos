@@ -225,4 +225,198 @@ new Vue({
 /**
  * 多个元素的过渡    https://cn.vuejs.org/v2/guide/transitions.html#多个元素的过渡
  */
+new Vue({
+	el: "#transitions009",
+	data: {
+		items: [
+			{id: 1},
+			{id: 2},
+			{id: 3},
+		],
+		aaa: "shuju"
+	}
+});
+
+/**
+ * 过渡模式    https://cn.vuejs.org/v2/guide/transitions.html#过渡模式
+ *
+ * 同时生效的进入和离开的过渡不能满足所有要求，所以 Vue 提供了 过渡模式 transition 标签的mode
+ * 1.in-out：新元素先进行过渡，完成之后当前元素过渡离开。 2.out-in：当前元素先进行过渡，完成之后新元素过渡进入。
+ */
+new Vue({
+	el: "#transitions010",
+	data:{
+		show: true,
+		show2: true
+	}
+});
+
+/**
+ * 多个组件的过渡		https://cn.vuejs.org/v2/guide/transitions.html#多个组件的过渡
+ */
+new Vue({
+	el: '#transitions011',
+	data: {
+		view: 'v-a'
+	},
+	components: {
+		'v-a': {
+			template: '<div>Component A</div>'
+		},
+		'v-b': {
+			template: '<div>Component B</div>'
+		}
+	}
+});
+
+/**
+ * 列表过渡		https://cn.vuejs.org/v2/guide/transitions.html#列表过渡
+ *
+ * 目前为止，关于过渡我们已经讲到：单个节点,同一时间渲染多个节点中的一个
+ * 那么怎么同时渲染整个列表，比如使用 v-for ？在这种场景中，使用 <transition-group> 组件。在我们深入例子之前，
+ * 先了解关于这个组件的几个特点：不同于 <transition>，它会以一个真实元素呈现：默认为一个 <span>。
+ * 你也可以通过 tag 特性更换为其他元素。内部元素 总是需要 提供唯一的 key 属性值
+ */
+
+/**
+ * 列表的进入-离开过渡		https://cn.vuejs.org/v2/guide/transitions.html#列表的进入-离开过渡
+ */
+new Vue({
+	el: '#transitions012',
+	data: {
+		items: [1,2,3,4,5,6,7,8,9],
+		nextNum: 10
+	},
+	methods: {
+		randomIndex: function () {
+			return Math.floor(Math.random() * this.items.length)
+		},
+		add: function () {
+			this.items.splice(this.randomIndex(), 0, this.nextNum++)
+		},
+		remove: function () {
+			this.items.splice(this.randomIndex(), 1)
+		},
+	}
+});
+
+/**
+ * 列表的排序过渡		https://cn.vuejs.org/v2/guide/transitions.html#列表的排序过渡
+ *
+ * <transition-group> 组件还有一个特殊之处。不仅可以进入和离开动画，还可以改变定位。要使用这个新功能只需了解新增的 v-move 特性，
+ * 它会在元素的改变定位的过程中应用。像之前的类名一样，可以通过 name 属性来自定义前缀，也可以通过 move-class 属性手动设置。
+ * v-move 对于设置过渡的切换时机和过渡曲线非常有用
+ * Vue 使用了一个叫 FLIP 简单的动画队列,使用 transforms 将元素从之前的位置平滑过渡新的位置
+ * 要注意的是使用 FLIP 过渡的元素不能设置为 display: inline 。作为替代方案，可以设置为 display: inline-block 或者放置于 flex 中
+ */
+new Vue({
+	el: '#transitions013',
+	data: {
+		items: [1,2,3,4,5,6,7,8,9]
+	},
+	methods: {
+		shuffle: function () {
+			this.items = _.shuffle(this.items)
+		}
+	}
+});
+new Vue({
+	el: '#transitions014',
+	data: {
+		items: [1,2,3,4,5,6,7,8,9],
+		nextNum: 10
+	},
+	methods: {
+		randomIndex: function () {
+			return Math.floor(Math.random() * this.items.length)
+		},
+		add: function () {
+			this.items.splice(this.randomIndex(), 0, this.nextNum++)
+		},
+		remove: function () {
+			this.items.splice(this.randomIndex(), 1)
+		},
+		shuffle: function () {
+			this.items = _.shuffle(this.items)
+		}
+	}
+});
+
+/**
+ * 列表的交错过渡		https://cn.vuejs.org/v2/guide/transitions.html#列表的交错过渡
+ */
+new Vue({
+	el: '#transitions015',
+	data: {
+		query: '',
+		list: [
+			{ msg: 'Bruce Lee' },
+			{ msg: 'Jackie Chan' },
+			{ msg: 'Chuck Norris' },
+			{ msg: 'Jet Li' },
+			{ msg: 'Kung Fury' }
+		]
+	},
+	computed: {
+		computedList: function () {
+			var vm = this
+			return this.list.filter(function (item) {
+				return item.msg.toLowerCase().indexOf(vm.query.toLowerCase()) !== -1
+			})
+		}
+	},
+	methods: {
+		beforeEnter: function (el) {
+			el.style.opacity = 0
+			el.style.height = 0
+		},
+		enter: function (el, done) {
+			var delay = el.dataset.index * 150
+			setTimeout(function () {
+				Velocity(
+					el,
+					{ opacity: 1, height: '1.6em' },
+					{ complete: done }
+				)
+			}, delay)
+		},
+		leave: function (el, done) {
+			var delay = el.dataset.index * 150
+			setTimeout(function () {
+				Velocity(
+					el,
+					{ opacity: 0, height: 0 },
+					{ complete: done }
+				)
+			}, delay)
+		}
+	}
+});
+
+/**
+ * 可复用的过渡		https://cn.vuejs.org/v2/guide/transitions.html#可复用的过渡
+ *
+ * 过渡可以通过 Vue 的组件系统实现复用。要创建一个可复用过渡组件，你需要做的就是将 <transition> 或者
+ * <transition-group> 作为根组件，然后将任何子组件放置在其中就可以了。
+ */
+Vue.component('my-special-transition', {
+	template: '\
+    <transition\
+      name="very-special-transition"\
+      mode="out-in"\
+      v-on:before-enter="beforeEnter"\
+      v-on:after-enter="afterEnter"\
+    >\
+      <slot></slot>\
+    </transition>\
+  ',
+	methods: {
+		beforeEnter: function (el) {
+			// ...
+		},
+		afterEnter: function (el) {
+			// ...
+		}
+	}
+});
 

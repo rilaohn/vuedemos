@@ -14,6 +14,7 @@
 	<link href="../css/vuedemos.css" type="text/css" rel="stylesheet">
 	<link href="https://cdn.jsdelivr.net/npm/animate.css@3.5.1" rel="stylesheet" type="text/css">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/velocity/1.2.3/velocity.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.14.1/lodash.min.js"></script>
 </head>
 <body>
 <div class="out" id="transitions001">
@@ -165,30 +166,98 @@
 <br>
 <div class="out" id="transitions009">
 	<h3>多个元素的过渡</h3>
+	<div>
+		<transition name="slide-fade">
+			<div v-if="items.length > 0">
+				{{aaa}}
+			</div>
+			<p v-else>Sorry, no items found.</p>
+		</transition>
+	</div>
 </div>
 <br>
 <div class="out" id="transitions010">
-	<h3></h3>
+	<h3>过渡模式</h3>
+	<!--请为每一个需要过渡的组件设置key-->
+	<div>
+		<button @click="show = !show">
+			in-out
+		</button>
+		<transition name="slide-fade" mode="in-out" duration="2000">
+			<p v-if="show" key="123">hello</p>
+			<p v-else key="456">world</p>
+		</transition>
+	</div>
+	<div>
+		<button @click="show2 = !show2">
+			out-in
+		</button>
+		<transition name="slide-fade" mode="out-in" duration="2000">
+			<p v-if="show2" key="741">hello</p>
+			<p v-else key="852">world</p>
+		</transition>
+	</div>
 </div>
 <br>
 <div class="out" id="transitions011">
-	<h3></h3>
+	<h3>多个组件的过渡</h3>
+	<div>
+		<input type="radio" v-model="view" id="radioA" value="v-a">
+		<label for="radioA" style="margin-right: 20px">A</label>
+		<input type="radio" v-model="view" id="radioB" value="v-b">
+		<label for="radioB">B</label>
+		<transition name="component-fade" mode="out-in">
+			<component v-bind:is="view"></component>
+		</transition>
+	</div>
 </div>
 <br>
 <div class="out" id="transitions012">
-	<h3></h3>
+	<h3>列表过渡 列表的进入-离开过渡</h3>
+	<div>
+		<button @click="add">Add</button>
+		<button @click="remove">Remove</button>
+		<transition-group name="list" tag="p">
+    <span v-for="item in items" :key="item" class="list-item">
+      {{ item }}
+    </span>
+		</transition-group>
+	</div>
 </div>
 <br>
 <div class="out" id="transitions013">
-	<h3></h3>
+	<h3>列表的排序过渡</h3>
+	<div>
+		<button @click="shuffle">Shuffle</button>
+		<transition-group name="flip-list" tag="ul">
+			<li v-for="item in items" :key="item">
+				{{ item }}
+			</li>
+		</transition-group>
+	</div>
 </div>
 <br>
 <div class="out" id="transitions014">
-	<h3></h3>
+	<h3>列表的排序过渡</h3>
+	<div>
+		<button @click="shuffle">Shuffle</button>
+		<button @click="add">Add</button>
+		<button @click="remove">Remove</button>
+		<transition-group name="list-complete" tag="p">
+			<span v-for="item in items" :key="item" class="list-complete-item">{{ item }}</span>
+		</transition-group>
+	</div>
 </div>
 <br>
 <div class="out" id="transitions015">
-	<h3></h3>
+	<h3>列表的交错过渡</h3>
+	<div>
+		<input v-model="query">
+		<transition-group name="staggered-fade" tag="ul" v-bind:css="false" v-on:before-enter="beforeEnter"
+				v-on:enter="enter" v-on:leave="leave" >
+			<li v-for="(item, index) in computedList" :key="item.msg" :data-index="index" >{{ item.msg }}</li>
+		</transition-group>
+	</div>
 </div>
 <br>
 <div class="out" id="transitions016">
