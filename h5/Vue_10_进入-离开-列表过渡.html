@@ -261,7 +261,14 @@
 </div>
 <br>
 <div class="out" id="transitions016">
-	<h3></h3>
+	<h3>动态过渡</h3>
+	Fade In: <input type="range" v-model="fadeInDuration" min="0" :max="maxFadeDuration">
+	Fade Out: <input type="range" v-model="fadeOutDuration" min="0" :max="maxFadeDuration">
+	<transition v-bind:css="false" v-on:before-enter="beforeEnter" v-on:enter="enter" v-on:leave="leave">
+		<p v-if="show">hello world!</p>
+	</transition>
+	<button v-if="stop" @click="stop = false; show = false">Start animating</button>
+	<button v-else @click="stop = true">Stop it!</button>
 </div>
 <br>
 <div class="out" id="transitions017">
@@ -278,6 +285,7 @@
 <br>
 <div class="out" id="transitions020">
 	<h3></h3>
+	<div></div>
 </div>
 <br>
 </body>
